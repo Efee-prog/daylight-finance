@@ -204,12 +204,24 @@ export function Section({
 }) {
   return (
     <section className={cx("flex flex-col gap-5", className)}>
-      {title ? (
-        <div className="flex items-end justify-between gap-4 border-b border-divider pb-3">
+      {/* A section may carry a description or actions without a title — the
+          transactions list, for instance, shows only a record count. Guarding
+          the whole header on `title` silently dropped those. */}
+      {title || description || actions ? (
+        <div
+          className={cx(
+            "flex items-end justify-between gap-4",
+            title && "border-b border-divider pb-3",
+          )}
+        >
           <div>
-            <h2 className="font-serif text-title text-ink">{title}</h2>
+            {title ? (
+              <h2 className="font-serif text-title text-ink">{title}</h2>
+            ) : null}
             {description ? (
-              <p className="mt-1 text-xs text-muted">{description}</p>
+              <p className={cx("text-xs text-muted", title && "mt-1")}>
+                {description}
+              </p>
             ) : null}
           </div>
           {actions ? <div className="shrink-0">{actions}</div> : null}
