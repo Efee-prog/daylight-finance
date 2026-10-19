@@ -1,26 +1,145 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ---------------------------------------------------------------------------
+   Daylight design tokens.
+
+   Every colour here was checked for WCAG contrast against the surfaces it is
+   actually used on (see docs/ARCHITECTURE.md § Design system). Two rules that
+   the measurements forced and that must not be broken:
+
+   1. Never put white text on --color-olive or --color-clay (1.8:1). Those are
+      surface tints; text on them is always --color-ink (7.8:1).
+   2. --color-divider is a decorative hairline only (1.2:1). Interactive
+      control borders use --color-line-strong (3.2:1) to satisfy WCAG 1.4.11.
+   --------------------------------------------------------------------------- */
+@theme {
+  /* Surfaces */
+  --color-paper: #f6f5f0;
+  --color-surface: #ffffff;
+  --color-sage: #e5e8df;
+  --color-olive: #b7c3a8;
+  --color-clay: #d9bdaa;
+
+  /* Text */
+  --color-ink: #272b25;
+  --color-ink-soft: #3c4139;
+  --color-muted: #65685e;
+
+  /* Lines */
+  --color-divider: #e1dfd6;
+  --color-line-strong: #8f8a7a;
+
+  /* Semantic (text-safe, measured on paper + surface) */
+  --color-positive: #5a6b45;
+  --color-caution: #8a5a3c;
+  --color-negative: #a8473a;
+
+  /* Data visualisation ramp — ordered for adjacent-category separation */
+  --color-data-1: #5a6b45;
+  --color-data-2: #8a5a3c;
+  --color-data-3: #7c8a94;
+  --color-data-4: #a89a6a;
+  --color-data-5: #6b6f63;
+  --color-data-6: #9a8aa0;
+
+  /* Typography */
+  --font-serif:
+    var(--font-newsreader), ui-serif, Georgia, "Times New Roman", serif;
+  --font-sans:
+    var(--font-manrope), ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  /* Editorial display scale */
+  --text-display: 3.5rem;
+  --text-display--line-height: 1.04;
+  --text-display--letter-spacing: -0.022em;
+  --text-headline: 2.25rem;
+  --text-headline--line-height: 1.12;
+  --text-headline--letter-spacing: -0.018em;
+  --text-title: 1.5rem;
+  --text-title--line-height: 1.22;
+  --text-title--letter-spacing: -0.012em;
+
+  /* Figure scale — for balances and metrics, tabular by default */
+  --text-figure-lg: 2.75rem;
+  --text-figure-lg--line-height: 1.05;
+  --text-figure-lg--letter-spacing: -0.02em;
+  --text-figure: 1.75rem;
+  --text-figure--line-height: 1.1;
+  --text-figure--letter-spacing: -0.014em;
+
+  /* Motion */
+  --ease-editorial: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    color-scheme: light;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: "kern" 1;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+  }
+
+  /* Visible, consistent focus for keyboard users across the whole app. */
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* Financial figures must never reflow horizontally as digits change. */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1;
+  }
+
+  ::selection {
+    background-color: var(--color-olive);
+    color: var(--color-ink);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  /* Short, measured entrance used sparingly on page sections. */
+  @keyframes daylight-rise {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .animate-rise {
+    animation: daylight-rise 420ms var(--ease-editorial) both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
