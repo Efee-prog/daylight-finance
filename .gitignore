@@ -39,3 +39,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# ...but the documented template must be committed, with no real values in it
+!.env.example
+
+# supabase local development artifacts
+/supabase/.branches
+/supabase/.temp
+
+# local scratch
+*.local
