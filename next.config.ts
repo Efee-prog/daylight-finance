@@ -16,7 +16,13 @@ const nextConfig: NextConfig = {
       },
     },
   },
-  typedRoutes: true,
+  // `typedRoutes` is off. Every route in this app sits under the dynamic
+  // `[locale]` segment, so every href is built as `/${locale}/transactions`
+  // rather than written as a literal. Typed routes cannot narrow those and
+  // demand an `as Route` cast at each call site, which removes the checking
+  // the flag exists to provide while adding noise. Link targets are instead
+  // kept honest by the navigation items being a single typed list.
+  typedRoutes: false,
 };
 
 export default nextConfig;

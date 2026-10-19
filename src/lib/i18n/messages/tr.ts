@@ -507,4 +507,14 @@ export const tr = {
   },
 } as const;
 
-export type Messages = typeof tr;
+/**
+ * Widens the literal types that `as const` produces back to `string`, while
+ * keeping the key structure intact. Without this, `Messages` would demand that
+ * every other locale repeat the Turkish text verbatim; with it, the structure
+ * is enforced and the wording is free.
+ */
+type Widen<T> = {
+  [K in keyof T]: T[K] extends string ? string : Widen<T[K]>;
+};
+
+export type Messages = Widen<typeof tr>;
