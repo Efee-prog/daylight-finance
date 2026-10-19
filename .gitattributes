@@ -1,0 +1,12 @@
+# Normalise line endings in the repository to LF regardless of the platform a
+# contributor works on, so Windows checkouts do not produce whitespace-only
+# diffs. The working copy still uses native endings via core.autocrlf.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
